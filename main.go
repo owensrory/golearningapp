@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"runtime"
+	"strings"
 )
 
 type machine struct {
@@ -26,8 +27,13 @@ func main() {
 	for i := 0; i < len(envs); i++ {
 		if *envPtr == envs[i] {
 			machine1 := createMachine(*envPtr)
-			fmt.Printf("%s\nHostname:%s\nEnv:%s\nOS:%s\nArchitecture:%s\nStatus:%s", appId, machine1.hostname, machine1.env, machine1.os, machine1.architecture, machine1.status)
-			return
+			if strings.Contains(machine1.hostname, "Error") {
+				fmt.Printf("%s", machine1.hostname)
+				os.Exit(1)
+			} else {
+				fmt.Printf("%s\nHostname:%s\nEnv:%s\nOS:%s\nArchitecture:%s\nStatus:%s", appId, machine1.hostname, machine1.env, machine1.os, machine1.architecture, machine1.status)
+				return
+			}
 		}
 	}
 	err := errors.New("Invalid environment specified. Please use 'dev', 'staging', or 'prod'.")
@@ -40,10 +46,10 @@ func createMachine(env string) machine {
 	var m machine
 	result, err := os.Hostname()
 	if err != nil {
-		fmt.Printf("Error retrieving hostname: %v", err)
-		os.Exit(1)
+		m.hostname = fmt.Sprintf("Error retrieving hostname: %v", err)
+	} else {
+		m.hostname = result
 	}
-	m.hostname = result
 	m.env = env
 	m.os = runtime.GOOS
 	m.architecture = runtime.GOARCH
