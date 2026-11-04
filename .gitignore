@@ -1,0 +1,18 @@
+# Go build artifacts
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Go build output folders
+/bin/
+build/
+dist/
+
+# Optional editor/OS noise
+.vscode/
+.DS_Store
+Thumbs.db

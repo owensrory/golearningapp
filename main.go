@@ -21,15 +21,27 @@ func main() {
 	flag.Parse()
 
 	if *envPtr == "dev" {
-		var machine1 machine
-		machine1.hostname, _ = os.Hostname()
-		machine1.env = *envPtr
-		machine1.os = runtime.GOOS
-		machine1.architecture = runtime.GOARCH
-		machine1.status = "Running in development mode"
+		machine1 := createMachine(*envPtr)
+		fmt.Printf("%s\nHostname:%s\nEnv:%s\nOS:%s\nArchitecture:%s\nStatus:%s", appId, machine1.hostname, machine1.env, machine1.os, machine1.architecture, machine1.status)
+	} else if *envPtr == "staging" {
+		machine1 := createMachine(*envPtr)
+		fmt.Printf("%s\nHostname:%s\nEnv:%s\nOS:%s\nArchitecture:%s\nStatus:%s", appId, machine1.hostname, machine1.env, machine1.os, machine1.architecture, machine1.status)
+	} else if *envPtr == "prod" {
+		machine1 := createMachine(*envPtr)
 		fmt.Printf("%s\nHostname:%s\nEnv:%s\nOS:%s\nArchitecture:%s\nStatus:%s", appId, machine1.hostname, machine1.env, machine1.os, machine1.architecture, machine1.status)
 	} else {
 		fmt.Printf("Error unsupported environment %s", *envPtr)
 	}
 
+}
+
+func createMachine(env string) machine {
+	var m machine
+	m.hostname, _ = os.Hostname()
+	m.env = env
+	m.os = runtime.GOOS
+	m.architecture = runtime.GOARCH
+	m.status = fmt.Sprintf("Running in %s mode", env)
+
+	return m
 }
