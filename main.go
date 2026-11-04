@@ -32,6 +32,7 @@ func main() {
 	}
 	err := errors.New("Invalid environment specified. Please use 'dev', 'staging', or 'prod'.")
 	fmt.Printf("Error: %v", err)
+	os.Exit(1)
 
 }
 
