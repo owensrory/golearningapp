@@ -29,7 +29,7 @@ func main() {
 		machine1.status = "Running in development mode"
 		fmt.Printf("%s\nHostname:%s\nEnv:%s\nOS:%s\nArchitecture:%s\nStatus:%s", appId, machine1.hostname, machine1.env, machine1.os, machine1.architecture, machine1.status)
 	} else {
-		fmt.Println("Invalid input")
+		fmt.Printf("Error unsupported environment %s", *envPtr)
 	}
 
 }
