@@ -37,7 +37,12 @@ func main() {
 
 func createMachine(env string) machine {
 	var m machine
-	m.hostname, _ = os.Hostname()
+	result, err := os.Hostname()
+	if err != nil {
+		fmt.Printf("Error retrieving hostname: %v", err)
+		os.Exit(1)
+	}
+	m.hostname = result
 	m.env = env
 	m.os = runtime.GOOS
 	m.architecture = runtime.GOARCH
