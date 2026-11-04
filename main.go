@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"os"
 	"runtime"
-	"strings"
 )
 
 type machine struct {
@@ -26,9 +25,9 @@ func main() {
 
 	for i := 0; i < len(envs); i++ {
 		if *envPtr == envs[i] {
-			machine1 := createMachine(*envPtr)
-			if strings.Contains(machine1.hostname, "Error") {
-				fmt.Printf("%s", machine1.hostname)
+			machine1, err := createMachine(*envPtr)
+			if err != nil {
+				fmt.Printf("Error: %v", err)
 				os.Exit(1)
 			} else {
 				fmt.Printf("%s\nHostname:%s\nEnv:%s\nOS:%s\nArchitecture:%s\nStatus:%s", appId, machine1.hostname, machine1.env, machine1.os, machine1.architecture, machine1.status)
@@ -42,7 +41,7 @@ func main() {
 
 }
 
-func createMachine(env string) machine {
+func createMachine(env string) (machine, error) {
 	var m machine
 	result, err := os.Hostname()
 	if err != nil {
@@ -55,5 +54,5 @@ func createMachine(env string) machine {
 	m.architecture = runtime.GOARCH
 	m.status = fmt.Sprintf("Running in %s mode", env)
 
-	return m
+	return m, err
 }
