@@ -60,6 +60,7 @@ func createMachine(env string) (machine, error) {
 	result, err := os.Hostname()
 	if err != nil {
 		m.hostname = fmt.Sprintf("Error retrieving hostname: %v", err)
+		return m, err
 	} else {
 		m.hostname = result
 	}
