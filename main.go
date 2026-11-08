@@ -24,7 +24,7 @@ type networkInterface struct {
 }
 
 func main() {
-	appId := "InfraProbe v0.1"
+	appId := "InfraProbe v0.2"
 	envPtr := flag.String("env", "", "Environment to parse.")
 	flag.Parse()
 
@@ -49,8 +49,8 @@ func main() {
 			}
 		}
 	}
-	//err := fmt.Printf("Invalid environment specified. Please use 'dev', 'staging', or 'prod'.")
-	fmt.Printf("Error: ")
+	err := fmt.Sprint("Invalid environment specified. Please use dev, staging, or prod.")
+	fmt.Printf("Error: %v", err)
 	os.Exit(1)
 
 }
@@ -93,6 +93,10 @@ func getInterfaces() ([]networkInterface, error) {
 		}
 		for _, addr := range addrs {
 			ni.ips = append(ni.ips, addr.String())
+
+		}
+		if len(ni.ips) < 1 {
+			ni.ips = append(ni.ips, "N/A")
 
 		}
 
