@@ -73,7 +73,7 @@ func createMachine(env string) (machine, error) {
 }
 
 func getInterfaces() ([]networkInterface, error) {
-	var ni networkInterface
+
 	listofinterfaces := []networkInterface{}
 	interfaces, err := net.Interfaces()
 	if err != nil {
@@ -81,8 +81,12 @@ func getInterfaces() ([]networkInterface, error) {
 	}
 
 	for _, iface := range interfaces {
+		var ni networkInterface
 		ni.name = iface.Name
 		ni.mac = iface.HardwareAddr.String()
+		if ni.mac == "" {
+			ni.mac = "N/A"
+		}
 		addrs, err := iface.Addrs()
 		if err != nil {
 			return listofinterfaces, fmt.Errorf("Error retrieving addresses for interface %s: %v", iface.Name, err)
@@ -91,6 +95,7 @@ func getInterfaces() ([]networkInterface, error) {
 			ni.ips = append(ni.ips, addr.String())
 
 		}
+
 		listofinterfaces = append(listofinterfaces, ni)
 	}
 
